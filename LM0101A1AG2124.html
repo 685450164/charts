@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="icon" href="./img/logo.ico">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+
+    h2 {
+      font-size: calc(16px + (24 - 16) * ((100vw - 300px) / (1440 - 300)));
+    }
+
+    .chartMenu {
+      width: 100vw;
+      height: 40px;
+      line-height: 40px;
+      background: #1a1a1a;
+      color: rgb(255, 255, 255);
+    }
+
+    .chartCard {
+      width: 100vw;
+      height: calc(100vh - 40px);
+      background: rgba(255, 26, 104, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chartBox {
+      width: 50%;
+      height: 80%;
+      padding: 20px;
+      border-radius: 20px;
+      border: solid 3px rgba(255, 26, 104, 1);
+      background: white;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .chartBox {
+        width: 80%;
+        height: 70%;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body onresize="responsiveFonts()">
+  <div class="chartMenu">
+    <h2>110年受僱員工每人每月薪資－按行業別分</h2>
+  </div>
+  <div class="chartCard">
+    <div class="chartBox">
+      <canvas id="myChart"></canvas>
+    </div>
+  </div>
+  <script src="./js/chart.min.js"></script>
+  <script>
+    if (window.outerWidth > 999) {
+      Chart.defaults.font.size = 18;
+    }
+
+    if (window.outerWidth < 999 && window.outerWidth > 500) {
+      Chart.defaults.font.size = 12;
+    }
+
+    if (window.outerWidth < 500) {
+      Chart.defaults.font.size = 8;
+    }
+
+    const labels = [
+      "工業及服務業",
+      "工業",
+      "礦業及土石採取業",
+      "製造業",
+      "食品及飼品製造業",
+      "飲料及菸草製造業",
+      "紡織業",
+      "成衣及服飾品製造業",
+      "皮革﹑毛皮及其製品製造業",
+      "木竹製品製造業",
+      "紙漿﹑紙及紙製品製造業",
+      "印刷及資料儲存媒體複製業",
+      "石油及煤製品製造業",
+      "化學原材料﹑肥料﹑氮化合物﹑塑橡膠原料及人造纖維製造業",
+      "其他化學製品製造業",
+      "藥品及醫用化學製品製造業",
+      "橡膠製品製造業",
+      "塑膠製品製造業",
+      "非金屬礦物製品製造業",
+      "基本金屬製造業",
+      "金屬製品製造業",
+      "電子零組件製造業",
+      "電腦﹑電子產品及光學製品製造業",
+      "電力設備及配備製造業",
+      "機械設備製造業",
+      "汽車及其零件製造業",
+      "其他運輸工具及其零件製造業",
+      "家具製造業",
+      "其他製造業",
+      "產業用機械設備維修及安裝業",
+      "電力及燃氣供應業",
+      "用水供應及污染整治業",
+      "營建工程業",
+      "服務業",
+      "批發及零售業",
+      "運輸及倉儲業",
+      "住宿及餐飲業",
+      "出版﹑影音製作﹑傳播及資通訊服務業",
+      "金融及保險業",
+      "不動產業",
+      "專業﹑科學及技術服務業",
+      "支援服務業",
+      "教育業(不含小學以上各級公私立學校等)",
+      "醫療保健及社會工作服務業",
+      "藝術﹑娛樂及休閒服務業",
+      "其他服務業",
+    ];
+
+    const backgroundcolor = [];
+    const bordercolor = [];
+
+    for (i = 0; i < labels.length; i++) {
+      const r = Math.floor(Math.random() * 255);
+      const g = Math.floor(Math.random() * 255);
+      const b = Math.floor(Math.random() * 255);
+      backgroundcolor.push("rgba(" + r + "," + g + "," + b + ", 0.2)");
+      bordercolor.push("rgba(" + r + "," + g + "," + b + ", 1)");
+    }
+
+    const data = {
+      labels: labels,
+      datasets: [
+        {
+          axis: "y",
+          label: "每人每月薪資",
+          data: [
+            55792, 56298, 56098, 57473, 43969, 57800, 40690, 38932, 45394,
+            37165, 41925, 39366, 86748, 76969, 61358, 56052, 44611, 44086,
+            45452, 60278, 39865, 82638, 78201, 48970, 43681, 47855, 51259,
+            33764, 43854, 61559, 93625, 45228, 47468, 55428, 51448, 57579,
+            35033, 75588, 98875, 57330, 65478, 38162, 31389, 64020, 38650,
+            36011,
+          ],
+          fill: false,
+          backgroundColor: backgroundcolor,
+          borderColor: bordercolor,
+          borderWidth: 1,
+        },
+      ],
+    };
+
+    const options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: "y",
+      scales: {
+        x: {
+          grid: {
+            display: true,
+          },
+          title: {
+            display: true,
+            text: "新台幣元",
+            font: {
+              weight: "bold",
+            },
+          },
+        },
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: "行業別",
+            font: {
+              weight: "bold",
+            },
+          },
+          grid: {
+            display: false,
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          labels: {
+            font: {
+              weight: "bold"
+            },
+          },
+        },
+        tooltip: {
+          callbacks: {
+            title: function (context) {
+              return `${context[0].label}`;
+            },
+            label: function (context) {
+              let label = `${context.dataset.label}:${context.formattedValue}元`;
+              return label;
+            },
+          },
+        },
+      },
+    };
+
+    const config = {
+      type: "bar",
+      data: data,
+      options: options,
+    };
+
+    const ctx = document.getElementById("myChart").getContext("2d");
+    const myChart = new Chart(ctx, config);
+
+    function responsiveFonts() {
+      if (window.outerWidth > 999) {
+        Chart.defaults.font.size = 18;
+      }
+
+      if (window.outerWidth < 999 && window.outerWidth > 500) {
+        Chart.defaults.font.size = 12;
+      }
+
+      if (window.outerWidth < 500) {
+        Chart.defaults.font.size = 8;
+      }
+      myChart.update();
+    }
+  </script>
+</body>
+
+</html>

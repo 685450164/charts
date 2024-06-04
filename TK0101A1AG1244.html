@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="icon" href="./img/logo.ico">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+
+    h2 {
+      font-size: calc(16px + (24 - 16) * ((100vw - 300px) / (1440 - 300)));
+    }
+
+    .chartMenu {
+      width: 100vw;
+      height: 40px;
+      line-height: 40px;
+      background: #1a1a1a;
+      color: rgb(255, 255, 255);
+    }
+
+    .chartCard {
+      width: 100vw;
+      height: calc(100vh - 40px);
+      background: rgba(255, 26, 104, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chartBox {
+      width: 60vw;
+      padding: 20px;
+      border-radius: 20px;
+      border: solid 3px rgba(255, 26, 104, 1);
+      background: white;
+    }
+
+    @media only screen and (max-width: 800px) {
+      .chartBox {
+        width: 80%;
+        /* height: 70%; */
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body onresize="responsiveFonts()">
+  <div class="chartMenu">
+    <h2>110年國人出國人數按目的地分</h2>
+  </div>
+  <div class="chartCard">
+    <div class="chartBox">
+      <canvas id="myChart"></canvas>
+    </div>
+  </div>
+  <script src="./js/chart.min.js"></script>
+  <script src="./js/chartjs-chart-treemap.min.js"></script>
+  <script>
+    if (window.outerWidth > 999) {
+      Chart.defaults.font.size = 16;
+    }
+
+    if (window.outerWidth < 999) {
+      Chart.defaults.font.size = 8;
+    }
+
+    let colorFromRaw = (ctx) => {
+      const colorArray = ['255,26,104', '54,162,235', '255,206,86', '75,192,192', '153,102,255', '255,159,64'];
+      const continentArray = [];
+
+      if (ctx.type != 'data') {
+        return 'transparent';
+      }
+
+      ctx.chart.data.datasets[0].tree.forEach(datastructure => {
+        continentArray.push(datastructure.continent);
+      })
+
+      const uniqueContinentArray = [...new Set(continentArray)];
+
+      const indexContinent = uniqueContinentArray.indexOf(ctx.raw._data.continent);
+
+      const value = ctx.raw.v;
+      let alpha = (Math.log(value) / 30);
+      return `rgba(${colorArray[indexContinent]}, ${alpha})`;
+    };
+
+    const data = {
+      datasets: [
+        {
+          label: "國人出國人數",
+          tree: [
+            { continent: "亞洲地區", country: "香港", value: 12692 },
+            { continent: "亞洲地區", country: "中國大陸", value: 128637 },
+            { continent: "亞洲地區", country: "日本", value: 14049 },
+            { continent: "亞洲地區", country: "南韓", value: 8269 },
+            { continent: "亞洲地區", country: "馬來西亞", value: 1373 },
+            { continent: "亞洲地區", country: "新加坡", value: 13656 },
+            { continent: "亞洲地區", country: "印尼", value: 2177 },
+            { continent: "亞洲地區", country: "菲律賓", value: 2099 },
+            { continent: "亞洲地區", country: "泰國", value: 7976 },
+            { continent: "亞洲地區", country: "越南", value: 11123 },
+            { continent: "亞洲地區", country: "澳門", value: 11468 },
+            { continent: "亞洲地區", country: "其他", value: 19217 },
+            { continent: "美洲地區", country: "美國", value: 103895 },
+            { continent: "美洲地區", country: "加拿大", value: 10369 },
+            { continent: "美洲地區", country: "其他", value: 75 },
+            { continent: "歐洲地區", country: "法國", value: 1792 },
+            { continent: "歐洲地區", country: "德國", value: 2632 },
+            { continent: "歐洲地區", country: "義大利", value: 24 },
+            { continent: "歐洲地區", country: "荷蘭", value: 996 },
+            { continent: "歐洲地區", country: "瑞士", value: 53 },
+            { continent: "歐洲地區", country: "英國", value: 949 },
+            { continent: "歐洲地區", country: "其他", value: 693 },
+            { continent: "大洋洲地區", country: "澳大利亞", value: 1629 },
+            { continent: "大洋洲地區", country: "紐西蘭", value: 495 },
+            { continent: "大洋洲地區", country: "其他", value: 2709 },
+            { continent: "非洲地區", country: "南非", value: 19 },
+            { continent: "非洲地區", country: "其他", value: 46 },
+            { continent: "未列明", country: "未列明", value: 865 },
+          ],
+          key: "value",
+          groups: ["continent", "country"],
+          backgroundColor: (ctx) => colorFromRaw(ctx),
+          labels: {
+            display: true,
+            formatter: (context) => {
+              return context.raw.g
+            }
+          },
+          captions: {
+            display: true,
+            font: {
+              // size: 16,
+            }
+          },
+          spacing: 0.1,
+          borderWidth: 0.5,
+          borderColor: "rgba(200,200,200,1)",
+          hoverBackgroundColor: "rgba(220,230,220,0.5)"
+        }
+      ]
+    };
+
+    const options = {
+      responsive: true,
+      // maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false,
+          labels: {
+            font: {
+              weight: "bold",
+            },
+          },
+        },
+        tooltip: {
+          callbacks: {
+            title: (context) => {
+              if (context[1] == undefined) {
+                return `${context[0].dataset.data[context[0].dataIndex].g}`;
+              } else {
+                return `${context[1].dataset.data[context[1].dataIndex].g}`;
+              }
+            },
+            label: (context) => {
+              console.log(context.dataset.data[context.dataIndex].g);
+              let value = context.dataset.data[context.dataIndex].v
+              value = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              let label = `${context.dataset.data[context.dataIndex].g}:${value}人次`;
+              return label;
+            }
+          }
+        }
+      }
+    }
+
+    const config = {
+      type: "treemap",
+      data: data,
+      options: options,
+    };
+
+    const ctx = document.getElementById("myChart").getContext("2d");
+    const myChart = new Chart(ctx, config);
+
+    let responsiveFonts = () => {
+      // if (window.outerWidth > 999) {
+      //   Chart.defaults.font.size = 18;
+      // }
+
+      // if (window.outerWidth < 999 && window.outerWidth > 500) {
+      //   Chart.defaults.font.size = 10;
+      // }
+
+      // if (window.outerWidth < 500) {
+      //   Chart.defaults.font.size = 8;
+      // }
+
+      if (window.outerWidth > 999) {
+        Chart.defaults.font.size = 16;
+      }
+
+      if (window.outerWidth < 999) {
+        Chart.defaults.font.size = 8;
+      }
+
+      myChart.update();
+    }
+  </script>
+</body>
+
+</html>

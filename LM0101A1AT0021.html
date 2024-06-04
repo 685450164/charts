@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="./img/logo.ico">
+    <link rel="stylesheet" href="../css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../css/responsive.dataTables.min.css">
+    <script src="../js/jquery-3.5.1.min.js"></script>
+    <script src="../js/jquery.datatables.min.js"></script>
+    <script src="../js/dataTables.responsive.min.js"></script>
+    <style>
+        h2 {
+            font-size: calc(16px + (24 - 16) * ((100vw - 300px) / (1440 - 300)));
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <h2>近十年我國就業人數統計表</h2>
+        </div>
+        <table id="mytable" class="display responsive nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th scope="col" rowspan="2"></th>
+                    <th scope="col" colspan="6" style="text-align: center;">就業人數(千人)</th>
+                </tr>
+                <tr>
+                    <th scope="col">計_人數</th>
+                    <th scope="col">計_年增率(%)</th>
+                    <th scope="col">男性_人數</th>
+                    <th scope="col">男性_年增率(%)</th>
+                    <th scope="col">女性_人數</th>
+                    <th scope="col">女性_年增率(%)</th>
+                </tr>
+            </thead>
+        </table>
+        <div>
+            註解：<br /><br />
+            SOURCE:<br />
+            行政院主計總處<br /><br />
+            UNIT:<br />
+            標於項目<br />
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#mytable').DataTable({
+                ajax: '../data/LM0101A1AT0021.txt',
+                ordering: false,
+                language: {
+                    decimal: '.',
+                    thousands: ',',
+                    url: '../json/zh-HANT.json'
+                },
+                columnDefs: [
+                    {
+                        targets: 0,
+                        className: 'dt-body-left'
+                    },
+                    {
+                        targets: [1, 3, 5],
+                        className: 'dt-center',
+                        render: $.fn.dataTable.render.number(',', '.', 0, '')
+                    },
+                    {
+                        targets: [2, 4, 6],
+                        className: 'dt-center',
+                        render: $.fn.dataTable.render.number(',', '.', 2, '')
+                    },
+                    { responsivePriority: 1, targets: 0 },
+                    { responsivePriority: 2, targets: -1 }
+                ]
+            });
+        });
+    </script>
+</body>
+
+</html>

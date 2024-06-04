@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="./img/logo.ico">
+    <link rel="stylesheet" href="../css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../css/responsive.dataTables.min.css">
+    <script src="../js/jquery-3.5.1.min.js"></script>
+    <script src="../js/jquery.datatables.min.js"></script>
+    <script src="../js/dataTables.responsive.min.js"></script>
+    <style>
+        h2 {
+            font-size: calc(16px + (24 - 16) * ((100vw - 300px) / (1440 - 300)));
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <h2>近十年全國賦稅實徵淨額統計表－按稅目別分率</h2>
+        </div>
+        <table id="mytable" class="display responsive nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">總計</th>
+                    <th scope="col">關稅</th>
+                    <th scope="col">所得稅</th>
+                    <th scope="col">遺產稅</th>
+                    <th scope="col">贈與稅</th>
+                    <th scope="col">營業稅</th>
+                    <th scope="col">貨物稅</th>
+                    <th scope="col">菸酒稅</th>
+                    <th scope="col">證券交易稅</th>
+                    <th scope="col">期貨交易稅</th>
+                    <th scope="col">土地稅</th>
+                    <th scope="col">房屋稅</th>
+                    <th scope="col">使用牌照稅</th>
+                    <th scope="col">契稅</th>
+                    <th scope="col">印花稅</th>
+                    <th scope="col">娛樂稅</th>
+                    <th scope="col">特別及臨時稅課</th>
+                    <th scope="col">教育捐</th>
+                    <th scope="col">健康福利捐</th>
+                    <th scope="col">特種貨物及勞務稅</th>
+                </tr>
+            </thead>
+        </table>
+        <div>
+            註解：<br /><br />
+            SOURCE:<br />
+            財政部<br /><br />
+            UNIT:<br />
+            新臺幣百萬元<br />
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#mytable').DataTable({
+                ajax: '../data/PF0101A1AT0017.txt',
+                ordering: false,
+                language: {
+                    decimal: '.',
+                    thousands: ',',
+                    url: '../json/zh-HANT.json'
+                },
+                columnDefs: [
+                    {
+                        targets: 0,
+                        className: 'dt-body-left'
+                    },
+                    {
+                        targets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+                        className: 'dt-right',
+                        render: $.fn.dataTable.render.number(',', '.', 0, '')
+                    },
+                    { responsivePriority: 1, targets: 0 },
+                    { responsivePriority: 2, targets: -1 }
+                ]
+            });
+        });
+    </script>
+</body>
+
+</html>
