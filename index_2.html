@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul,
+        #myUL {
+            list-style-type: none;
+        }
+
+        #myUL {
+            margin: 0;
+            padding: 0;
+        }
+
+        .caret {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .caret::before {
+            content: "\25B6";
+            color: black;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .caret-down::before {
+            transform: rotate(90deg);
+        }
+
+        .nested {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>統計資料小舖</h2>
+
+    <ul id="myUL">
+        <li><span class="caret">國土及人口</span>
+            <ul class="nested">
+                <li><span class="caret">人口</span>
+                    <ul class="nested">
+                        <li><a href="./Po0101A1AG222.html" target="_blank">圖</a></li>
+                        <li><a href="./Po0101A1AT001.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">人口密度</span>
+                    <ul class="nested">
+                        <li><a href="./Po0101A1AG214.html" target="_blank">圖</a></li>
+                        <li><a href="./Po0101A1AT003.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">土地面積</span>
+                    <ul class="nested">
+                        <li><a href="./CS0101A1AG216.html" target="_blank">圖</a></li>
+                        <li><a href="./CS0101A1AT005.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">耕地面積</span>
+                    <ul class="nested">
+                        <li><a href="./CS0101A1AG218.html" target="_blank">圖</a></li>
+                        <li><a href="./AG0101A1AT007.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">國家公園面積</span>
+                    <ul class="nested">
+                        <!-- <li><a href="./" target="_blank">圖</a></li> -->
+                        <li><a href="./EP0101A1AT009.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><span class="caret">經濟及財政</span>
+            <ul class="nested">
+                <li><span class="caret">經濟成長率</span>
+                    <ul class="nested">
+                        <li><a href="./ES0101A1AG3111.html" target="_blank">圖</a></li>
+                        <li><a href="./ES0101A1AT0010.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">進出口貿易</span>
+                    <ul class="nested">
+                        <li><a href="./ES0101A1AG1113.html" target="_blank">圖</a></li>
+                        <li><a href="./ES0101A1AT0012.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">家庭收支概況</span>
+                    <ul class="nested">
+                        <!-- <li><a href="./" target="_blank">圖</a></li> -->
+                        <li><a href="./FF0101A1AT0014.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">物價指數</span>
+                    <ul class="nested">
+                        <li><a href="./PR0101A1AG3116.html" target="_blank">圖</a></li>
+                        <li><a href="./PR0101A1AT0015.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">賦稅實徵淨額</span>
+                    <ul class="nested">
+                        <!-- <li><a href="./" target="_blank">圖</a></li> -->
+                        <li><a href="./PF0101A1AT0017.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">各級政府收支</span>
+                    <ul class="nested">
+                        <!-- <li><a href="./" target="_blank">圖</a></li> -->
+                        <li><a href="./PF0101A1AT0018.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><span class="caret">就業及薪資</span>
+            <ul class="nested">
+                <li><span class="caret">失業率</span>
+                    <ul class="nested">
+                        <li><a href="./LM0101A1AG1120.html" target="_blank">圖</a></li>
+                        <li><a href="./LM0101A1AT0019.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">就業人數</span>
+                    <ul class="nested">
+                        <li><a href="./LM0101A1AG1122.html" target="_blank">圖</a></li>
+                        <li><a href="./LM0101A1AT0021.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">受僱員工每人每月薪資</span>
+                    <ul class="nested">
+                        <li><a href="./LM0101A1AG2124.html" target="_blank">圖</a></li>
+                        <li><a href="./LM0101A1AT0023.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><span class="caret">教育及文化</span>
+            <ul class="nested">
+                <li><span class="caret">學生人數</span>
+                    <ul class="nested">
+                        <li><a href="./ER0101A1AG2126.html" target="_blank">圖</a></li>
+                        <li><a href="./ER0101A1AT0025.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">畢業生升學率</span>
+                    <ul class="nested">
+                        <!-- <li><a href="./" target="_blank">圖</a></li> -->
+                        <li><a href="./ER0101A1AT0027.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">藝文展演</span>
+                    <ul class="nested">
+                        <li><a href="./CL0101A1AG3130.html" target="_blank">圖</a></li>
+                        <li><a href="./CL0101A1AT0029.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">公共圖書館</span>
+                    <ul class="nested">
+                        <!-- <li><a href="./" target="_blank">圖</a></li> -->
+                        <li><a href="./ER0101A1AT0031.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><span class="caret">衛生保健</span>
+            <ul class="nested">
+                <li><span class="caret">醫療院所數</span>
+                    <ul class="nested">
+                        <li><a href="./HS0101A1AG1234.html" target="_blank">圖</a></li>
+                        <li><a href="./HS0101A1AT0033.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">病床數</span>
+                    <ul class="nested">
+                        <li><a href="./HS0101A1AG2236.html" target="_blank">圖</a></li>
+                        <li><a href="./HS0101A1AT0035.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">死因統計</span>
+                    <ul class="nested">
+                        <li><a href="./HS0101A1AG4138.html" target="_blank">圖</a></li>
+                        <li><a href="./HS0101A1AT0037.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">政府醫療保健支出</span>
+                    <ul class="nested">
+                        <!-- <li><a href="./" target="_blank">圖</a></li> -->
+                        <li><a href="./HS0101A1AT0039.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">醫院醫療服務量</span>
+                    <ul class="nested">
+                        <!-- <li><a href="./" target="_blank">圖</a></li> -->
+                        <li><a href="./HS0101A1AT0040.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><span class="caret">交通及氣象</span>
+            <ul class="nested">
+                <li><span class="caret">鐵路客運</span>
+                    <ul class="nested">
+                        <li><a href="./TK0101A1AG1242.html" target="_blank">圖</a></li>
+                        <li><a href="./TK0101A1AT0041.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">國人出國</span>
+                    <ul class="nested">
+                        <li><a href="./TK0101A1AG1244.html" target="_blank">圖</a></li>
+                        <li><a href="./TK0101A1AT0043.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">道路面積</span>
+                    <ul class="nested">
+                        <li><a href="./TK0101A1AG2146.html" target="_blank">圖</a></li>
+                        <li><a href="./TK0101A1AT0045.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">道路長度</span>
+                    <ul class="nested">
+                        <li><a href="./TK0101A1AG1248.html" target="_blank">圖</a></li>
+                        <li><a href="./TK0101A1AT0047.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">降水量</span>
+                    <ul class="nested">
+                        <li><a href="./EP0101A1AG3150.html" target="_blank">圖</a></li>
+                        <li><a href="./EP0101A1AT0049.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">平均氣溫</span>
+                    <ul class="nested">
+                        <li><a href="./EP0101A1AG3152.html" target="_blank">圖</a></li>
+                        <li><a href="./EP0101A1AT0051.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><span class="caret">環保</span>
+            <ul class="nested">
+                <li><span class="caret">環境音量</span>
+                    <ul class="nested">
+                        <!-- <li><a href="./" target="_blank">圖</a></li> -->
+                        <li><a href="./EP0101A1AT0053.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">空氣污染指標</span>
+                    <ul class="nested">
+                        <!-- <li><a href="./" target="_blank">圖</a></li> -->
+                        <li><a href="./EP0101A1AT0055.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">重要河川污染</span>
+                    <ul class="nested">
+                        <!-- <li><a href="./" target="_blank">圖</a></li> -->
+                        <li><a href="./EP0101A1AT0056.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">國家公園野生物種</span>
+                    <ul class="nested">
+                        <li><a href="./EP0101A1AG1159.html" target="_blank">圖</a></li>
+                        <li><a href="./EP0101A1AT0058.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><span class="caret">治安</span>
+            <ul class="nested">
+                <li><span class="caret">刑事案件</span>
+                    <ul class="nested">
+                        <li><a href="./PS0101A1AG3161.html" target="_blank">圖</a></li>
+                        <li><a href="./PS0101A1AT0060.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+                <li><span class="caret">查獲槍砲彈藥刀械數量</span>
+                    <ul class="nested">
+                        <li><a href="./PS0101A1AG2165.html" target="_blank">圖</a></li>
+                        <li><a href="./PS0101A1AT0064.html" target="_blank">表</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <script>
+        var toggler = document.getElementsByClassName("caret");
+        var i;
+
+        for (i = 0; i < toggler.length; i++) {
+            toggler[i].addEventListener("click", function () {
+                this.parentElement.querySelector(".nested").classList.toggle("active");
+                this.classList.toggle("caret-down");
+            });
+        }
+    </script>
+
+
+</body>
+
+</html>

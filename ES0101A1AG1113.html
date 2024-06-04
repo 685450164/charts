@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="icon" href="./img/logo.ico">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+
+    h2 {
+      font-size: calc(16px + (24 - 16) * ((100vw - 300px) / (1440 - 300)));
+    }
+
+    .chartMenu {
+      width: 100vw;
+      height: 40px;
+      background: #1a1a1a;
+      color: rgb(255, 255, 255);
+    }
+
+    .chartCard {
+      width: 100vw;
+      height: calc(100vh - 40px);
+      background: rgba(255, 26, 104, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chartBox {
+      width: 50%;
+      height: 50%;
+      padding: 20px;
+      border-radius: 20px;
+      border: solid 3px rgba(255, 26, 104, 1);
+      background: white;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .chartBox {
+        width: 80%;
+        height: 70%;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body onresize="responsiveFonts()">
+  <div class="chartMenu">
+    <h2>110年主要國家進出口貿易統計</h2>
+  </div>
+  <div class="chartCard">
+    <div class="chartBox">
+      <canvas id="myChart"></canvas>
+    </div>
+  </div>
+  <script src="./js/chart.min.js"></script>
+  <script src="./js/chartjs-plugin-datalabels.min.js"></script>
+  <script>
+    if (window.outerWidth > 999) {
+      Chart.defaults.font.size = 18;
+    }
+
+    if (window.outerWidth < 999 && window.outerWidth > 500) {
+      Chart.defaults.font.size = 12;
+    }
+
+    if (window.outerWidth < 500) {
+      Chart.defaults.font.size = 8;
+    }
+
+    const backgroundcolor = [];
+    const bordercolor = [];
+
+    for (i = 0; i < 11; i++) {
+      const r = Math.floor(Math.random() * 255);
+      const g = Math.floor(Math.random() * 255);
+      const b = Math.floor(Math.random() * 255);
+
+      backgroundcolor.push("rgba(" + r + "," + g + "," + b + ", 0.2)");
+      bordercolor.push("rgba(" + r + "," + g + "," + b + ", 1)");
+    }
+
+    const labels = ["進口", "出口"];
+    const data = {
+      labels: labels,
+      datasets: [
+        {
+          label: "中華民國",
+          data: [381, 446],
+          backgroundColor: backgroundcolor[0],
+          borderColor: bordercolor[0],
+          borderWidth: 1,
+          datalabels: {
+            anchor: "end",
+            align: "top",
+            formatter: (value, context) => {
+              return context.dataset.label;
+            }
+          }
+        },
+        {
+          label: "美國",
+          data: [2937, 1755],
+          backgroundColor: backgroundcolor[1],
+          borderColor: bordercolor[1],
+          borderWidth: 1,
+          datalabels: {
+            anchor: "end",
+            align: "top",
+            formatter: (value, context) => {
+              return context.dataset.label;
+            }
+          }
+        },
+        {
+          label: "日本",
+          data: [769, 756],
+          backgroundColor: backgroundcolor[2],
+          borderColor: bordercolor[2],
+          borderWidth: 1,
+          datalabels: {
+            anchor: "end",
+            align: "top",
+            formatter: (value, context) => {
+              return context.dataset.label;
+            }
+          }
+        },
+        {
+          label: "德國",
+          data: [1419, 1632],
+          backgroundColor: backgroundcolor[3],
+          borderColor: bordercolor[3],
+          borderWidth: 1,
+          datalabels: {
+            anchor: "end",
+            align: "top",
+            formatter: (value, context) => {
+              return context.dataset.label;
+            }
+          }
+        },
+        {
+          label: "法國",
+          data: [714, 585],
+          backgroundColor: backgroundcolor[4],
+          borderColor: bordercolor[4],
+          borderWidth: 1,
+          datalabels: {
+            anchor: "end",
+            align: "top",
+            formatter: (value, context) => {
+              return context.dataset.label;
+            }
+          }
+        },
+        {
+          label: "英國",
+          data: [694, 468],
+          backgroundColor: backgroundcolor[5],
+          borderColor: bordercolor[5],
+          borderWidth: 1,
+          datalabels: {
+            anchor: "end",
+            align: "top",
+            formatter: (value, context) => {
+              return context.dataset.label;
+            }
+          }
+        },
+        {
+          label: "義大利",
+          data: [550, 610],
+          backgroundColor: backgroundcolor[6],
+          borderColor: bordercolor[6],
+          borderWidth: 1,
+          datalabels: {
+            anchor: "end",
+            align: "top",
+            formatter: (value, context) => {
+              return context.dataset.label;
+            }
+          }
+        },
+        {
+          label: "南韓",
+          data: [615, 644],
+          backgroundColor: backgroundcolor[7],
+          borderColor: bordercolor[7],
+          borderWidth: 1,
+          datalabels: {
+            anchor: "end",
+            align: "top",
+            formatter: (value, context) => {
+              return context.dataset.label;
+            }
+          }
+        },
+        {
+          label: "新加坡",
+          data: [406, 457],
+          backgroundColor: backgroundcolor[8],
+          borderColor: bordercolor[8],
+          borderWidth: 1,
+          datalabels: {
+            anchor: "end",
+            align: "top",
+            formatter: (value, context) => {
+              return context.dataset.label;
+            }
+          }
+        },
+        {
+          label: "香港",
+          data: [712, 670],
+          backgroundColor: backgroundcolor[9],
+          borderColor: bordercolor[9],
+          borderWidth: 1,
+          datalabels: {
+            anchor: "end",
+            align: "top",
+            formatter: (value, context) => {
+              return context.dataset.label;
+            }
+          }
+        },
+        {
+          label: "中國大陸",
+          data: [2688, 3364],
+          backgroundColor: backgroundcolor[10],
+          borderColor: bordercolor[10],
+          borderWidth: 1,
+          datalabels: {
+            anchor: "end",
+            align: "top",
+            formatter: (value, context) => {
+              return context.dataset.label;
+            }
+          }
+        },
+      ],
+    };
+
+    const options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      responsive: true,
+      scales: {
+        x: {
+          grid: {
+            display: false,
+          },
+          title: {
+            display: false
+          },
+        },
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: "美金十億元",
+            font: {
+              weight: "bold",
+            },
+          },
+        },
+      },
+      plugins: {
+        datalabels: {
+          font: (context) => {
+            let width = context.chart.width;
+            let size = Math.round(width / 64);
+            return {
+              size: size
+            };
+          }
+        },
+        legend: {
+          display: false
+        },
+        tooltip: {
+          callbacks: {
+            title: function (context) {
+              return `${context[0].label}`;
+            },
+            label: function (context) {
+              let label = `${context.dataset.label}:${context.formattedValue}(美金十億元)`;
+              return label;
+            },
+          },
+        },
+      },
+    };
+
+    const config = {
+      type: "bar",
+      data: data,
+      plugins: [ChartDataLabels],
+      options: options,
+    };
+
+    const ctx = document.getElementById("myChart").getContext("2d");
+    const myChart = new Chart(ctx, config);
+
+    let responsiveFonts = () => {
+      if (window.outerWidth > 999) {
+        Chart.defaults.font.size = 18;
+      }
+
+      if (window.outerWidth < 999 && window.outerWidth > 500) {
+        Chart.defaults.font.size = 12;
+      }
+
+      if (window.outerWidth < 500) {
+        Chart.defaults.font.size = 8;
+      }
+      myChart.update();
+    }
+  </script>
+</body>
+
+</html>

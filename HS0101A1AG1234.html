@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="icon" href="./img/logo.ico">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+
+    h2 {
+      font-size: calc(16px + (24 - 16) * ((100vw - 300px) / (1440 - 300)));
+    }
+
+    .chartMenu {
+      width: 100vw;
+      height: 40px;
+      line-height: 40px;
+      background: #1a1a1a;
+      color: rgb(255, 255, 255);
+    }
+
+    .chartCard {
+      width: 100vw;
+      height: calc(100vh - 40px);
+      background: rgba(255, 26, 104, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chartBox {
+      width: 50%;
+      height: 50%;
+      padding: 20px;
+      border-radius: 20px;
+      border: solid 3px rgba(255, 26, 104, 1);
+      background: white;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .chartBox {
+        width: 80%;
+        height: 50%;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body onresize="responsiveFonts()">
+  <div class="chartMenu">
+    <h2>近十年我國醫療院所數</h2>
+  </div>
+  <div class="chartCard">
+    <div class="chartBox">
+      <canvas id="myChart"></canvas>
+    </div>
+  </div>
+  <script src="./js/chart.min.js"></script>
+  <script>
+    if (window.outerWidth > 999) {
+      Chart.defaults.font.size = 18;
+    }
+
+    if (window.outerWidth < 999 && window.outerWidth > 500) {
+      Chart.defaults.font.size = 12;
+    }
+
+    if (window.outerWidth < 500) {
+      Chart.defaults.font.size = 8;
+    }
+
+    const labels = [
+      "100",
+      "101",
+      "102",
+      "103",
+      "104",
+      "105",
+      "106",
+      "107",
+      "108",
+      "109",
+    ];
+
+    const backgroundcolor = [];
+    const bordercolor = [];
+
+    for (i = 0; i < labels.length; i++) {
+      const r = Math.floor(Math.random() * 255);
+      const g = Math.floor(Math.random() * 255);
+      const b = Math.floor(Math.random() * 255);
+      backgroundcolor.push("rgba(" + r + "," + g + "," + b + ", 0.2)");
+      bordercolor.push("rgba(" + r + "," + g + "," + b + ", 1)");
+    }
+
+    const data = {
+      labels: labels,
+      datasets: [
+        {
+          label: "醫療院所數",
+          data: [
+            21135, 21437, 21713, 22041, 22177, 22384, 22612, 22816, 22992,
+            23132,
+          ],
+          backgroundColor: backgroundcolor,
+          borderColor: bordercolor,
+          borderWidth: 1,
+        },
+      ],
+    };
+
+    const options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          grid: {
+            display: false,
+          },
+          title: {
+            display: true,
+            text: "年",
+            font: {
+              weight: "bold",
+            },
+          },
+        },
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: "家",
+            font: {
+              weight: "bold",
+            },
+          },
+        },
+      },
+      plugins: {
+        legend: {
+          labels: {
+            font: {
+              weight: "bold"
+            },
+          },
+        },
+        tooltip: {
+          callbacks: {
+            title: function (context) {
+              return `${context[0].label}年`;
+            },
+            label: function (context) {
+              let label = `${context.dataset.label}:${context.formattedValue}家`;
+              return label;
+            },
+          },
+        },
+      },
+    };
+
+    const config = {
+      type: "bar",
+      data: data,
+      options: options,
+    };
+
+    const ctx = document.getElementById("myChart").getContext("2d");
+    const myChart = new Chart(ctx, config);
+
+    function responsiveFonts() {
+      if (window.outerWidth > 999) {
+        Chart.defaults.font.size = 18;
+      }
+
+      if (window.outerWidth < 999 && window.outerWidth > 500) {
+        Chart.defaults.font.size = 12;
+      }
+
+      if (window.outerWidth < 500) {
+        Chart.defaults.font.size = 8;
+      }
+      myChart.update();
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="./img/logo.ico">
+    <link rel="stylesheet" href="./css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="./css/responsive.dataTables.min.css">
+    <script src="./js/jquery-3.5.1.min.js"></script>
+    <script src="./js/jquery.datatables.min.js"></script>
+    <script src="./js/dataTables.responsive.min.js"></script>
+    <style>
+        h2 {
+            font-size: calc(16px + (24 - 16) * ((100vw - 300px) / (1440 - 300)));
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <h2>近十年我國家庭收支概況統計表</h2>
+        </div>
+        <table id="mytable" class="display responsive nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">每戶戶內人口(人)</th>
+                    <th scope="col">每戶就業人數(人)</th>
+                    <th scope="col">可支配所得平均數-每戶(元)</th>
+                    <th scope="col">可支配所得平均數-每人(元)</th>
+                    <th scope="col">可支配所得中位數-每戶(元)</th>
+                    <th scope="col">可支配所得中位數-每人(元)</th>
+                    <th scope="col">每戶消費支出(元)</th>
+                    <th scope="col">消費傾向(%)</th>
+                    <th scope="col">每戶儲蓄(元)</th>
+                    <th scope="col">儲蓄率(%)</th>
+                    <th scope="col">每戶住宅坪數(坪)</th>
+                    <th scope="col">自有住宅率(%)</th>
+                </tr>
+            </thead>
+        </table>
+        <div>
+            註解：<br /><br />
+            SOURCE:<br />
+            行政院主計總處<br /><br />
+            UNIT:<br />
+            標於項目<br />
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#mytable').DataTable({
+                ajax: './data/FF0101A1AT0014.txt',
+                ordering: false,
+                language: {
+                    decimal: '.',
+                    thousands: ',',
+                    url: './json/zh-HANT.json'
+                },
+                columnDefs: [
+                    {
+                        targets: 0,
+                        className: 'dt-body-right'
+                    },
+                    {
+                        targets: [1, 2, 8, 10, 12],
+                        className: 'dt-right',
+                        render: $.fn.dataTable.render.number(',', '.', 2, '')
+                    },
+                    {
+                        targets: 11,
+                        className: 'dt-right',
+                        render: $.fn.dataTable.render.number(',', '.', 1, '')
+                    },
+                    {
+                        targets: [3, 4, 5, 6, 7, 9],
+                        className: 'dt-right',
+                        render: $.fn.dataTable.render.number(',', '.', 0, '')
+                    },
+                    { responsivePriority: 1, targets: 0 },
+                    { responsivePriority: 2, targets: -1 }
+                ]
+            });
+        });
+    </script>
+</body>
+
+</html>

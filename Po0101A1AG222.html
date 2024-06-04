@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="icon" href="./img/logo.ico">
+  <script src="./js/d3.v7.min.js"></script>
+  <script src="./js/topojson.min.js"></script>
+  <link rel="stylesheet" href="./css/leaflet.css">
+  <script src="./js/leaflet.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+
+    h2 {
+      font-size: calc(16px + (24 - 16) * ((100vw - 300px) / (1440 - 300)));
+    }
+
+    .chartMenu {
+      width: 100vw;
+      height: 40px;
+      line-height: 40px;
+      background: #1a1a1a;
+      color: rgb(255, 255, 255);
+    }
+
+    .chartCard {
+      width: 100vw;
+      height: calc(100vh - 40px);
+      background: rgba(255, 26, 104, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #chartBox {
+      width: 80vw;
+      height: 80vh;
+      border-radius: 20px;
+      border: solid 3px rgba(255, 26, 104, 1);
+      background: white;
+    }
+
+    .legend {
+      line-height: 18px;
+      color: #555;
+    }
+
+    .legend i {
+      width: 18px;
+      height: 18px;
+      float: left;
+      margin-right: 8px;
+      opacity: 0.7;
+    }
+
+    #map {
+      border-radius: 20px;
+    }
+
+    @media only screen and (max-width: 500px) {
+      .legend {
+        line-height: 12px;
+        color: #555;
+      }
+
+      .legend i {
+        width: 12px;
+        height: 12px;
+        float: left;
+        margin-right: 8px;
+        opacity: 0.7;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <div class="chartMenu">
+      <h2>110年各縣市人口</h2>
+    </div>
+    <div class="chartCard">
+      <div id="chartBox">
+        <div id="map"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    let formatNumber = d3.format(",.1f");
+    d3.json("./json/population.json").then((data) => {
+
+      data.forEach((d) => {
+        d.year = d.year;
+        d.COUNTYNAME = d.COUNTYNAME;
+        d.value = +d.value / 10000;
+      });
+
+      let population = [];
+      for (let i = 0; i < data.length; i++) {
+        population[data[i].COUNTYNAME] = data[i].value;
+      }
+
+      d3.json("./json/taiwan.json").then((topoData) => {
+        let geoData = topojson.feature(topoData, topoData.objects.COUNTY_MOI_1060525);
+
+        for (var i = 0; i < geoData.features.length; i++) {
+          geoData.features[i].properties.population = population[geoData.features[i].properties.COUNTYNAME];
+        }
+
+        let map;
+
+        let clientWidth = document.getElementById("chartBox").clientWidth;
+        let clientHeight = document.getElementById("chartBox").clientHeight;
+
+        if (document.body.clientWidth >= 768) {
+          d3.select("#map").style("height", clientHeight + "px");
+          map = L.map("map", { minZoom: 8, maxZoom: 8 })
+            .setView([23.6, 121], 8);
+        } else if (document.body.clientWidth < 400) {
+          d3.select("#map").style("height", clientHeight + "px");
+          map = L.map("map", { minZoom: 7, maxZoom: 7 })
+            .setView([23.6, 121], 7);
+        } else {
+          d3.select("#map").style("height", clientHeight + "px");
+          map = L.map("map", { minZoom: 7.5, maxZoom: 7.5 })
+            .setView([23.6, 121], 7.5);
+        }
+
+        L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+          attribution: '© <a href="http://www.nlsc.gov.tw/">內政部國土測繪中心</a> 貢獻'
+        }).addTo(map);
+
+        L.geoJson(geoData).addTo(map);
+
+        let getColor = (d) => {
+          return d > 350 ? '#800026' :
+            d > 300 ? '#BD0026' :
+              d > 250 ? '#E31A1C' :
+                d > 200 ? '#FC4E2A' :
+                  d > 150 ? '#FD8D3C' :
+                    d > 100 ? '#FEB24C' :
+                      d > 50 ? '#FED976' :
+                        '#FFEDA0';
+        }
+
+        let style = (feature) => {
+          return {
+            fillColor: getColor(feature.properties.population),
+            weight: 2,
+            opacity: 1,
+            color: 'white',
+            dashArray: '3',
+            fillOpacity: 0.7
+          };
+        }
+
+        L.geoJson(geoData, { style: style }).addTo(map);
+
+        let highlightFeature = (e) => {
+          var layer = e.target;
+
+          layer.setStyle({
+            weight: 5,
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 0.7
+          });
+
+          if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            layer.bringToFront();
+          }
+        }
+
+        let resetHighlight = (e) => {
+          geojson.resetStyle(e.target);
+        }
+
+        let zoomToFeature = (e) => {
+          map.fitBounds(e.target.getBounds());
+        }
+
+        let onEachFeature = (feature, layer) => {
+          layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight,
+            click: zoomToFeature
+          });
+
+          layer.bindTooltip(feature.properties.COUNTYNAME + '<br>' + '人口數:' + formatNumber(feature.properties.population) + "萬人");
+        }
+
+        let geojson;
+
+        geojson = L.geoJson(geoData, {
+          style: style,
+          onEachFeature: onEachFeature
+        }).addTo(map);
+
+        let legend = L.control({ position: 'topright' });
+
+        legend.onAdd = (map) => {
+          let div = L.DomUtil.create('div', 'info legend'),
+            grades = [0, 50, 100, 150, 200, 250, 300, 350, 400],
+            labels = [];
+
+          for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+              '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+              grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+          }
+          return div;
+        };
+        legend.addTo(map);
+      })
+    })
+  </script>
+
+</body>
+
+</html>

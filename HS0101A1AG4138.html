@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="icon" href="./img/logo.ico">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+
+    h2 {
+      font-size: calc(16px + (24 - 16) * ((100vw - 300px) / (1440 - 300)));
+    }
+
+    .chartMenu {
+      width: 100vw;
+      height: 40px;
+      line-height: 40px;
+      background: #1a1a1a;
+      color: rgb(255, 255, 255);
+    }
+
+    .chartCard {
+      width: 100vw;
+      height: calc(100vh - 40px);
+      background: rgba(255, 26, 104, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chartBox {
+      width: 50%;
+      height: 80%;
+      padding: 20px;
+      border-radius: 20px;
+      border: solid 3px rgba(255, 26, 104, 1);
+      background: white;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .chartBox {
+        width: 80%;
+        height: 70%;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body onresize="responsiveFonts()">
+  <div class="chartMenu">
+    <h2>109年主要癌症死因統計－按性別分</h2>
+  </div>
+  <div class="chartCard">
+    <div class="chartBox">
+      <canvas id="myChart"></canvas>
+    </div>
+  </div>
+  <script src="./js/chart.min.js"></script>
+  <script>
+    if (window.outerWidth > 999) {
+      Chart.defaults.font.size = 18;
+    }
+
+    if (window.outerWidth < 999 && window.outerWidth > 500) {
+      Chart.defaults.font.size = 12;
+    }
+
+    if (window.outerWidth < 500) {
+      Chart.defaults.font.size = 8;
+    }
+
+    const labels = [
+      "氣管、支氣管和肺癌",
+      "肝和肝內膽管癌",
+      "結腸、直腸和肛門癌",
+      "口腔癌",
+      "女性乳癌",
+      "胰臟癌",
+      "胃癌",
+      "食道癌",
+      "前列腺(攝護腺)癌",
+      "非何杰金氏淋巴瘤",
+      "白血病",
+      "膀胱癌",
+      "卵巢癌",
+      "子宮頸及部位未明示子宮癌",
+      "子宮體癌",
+    ];
+
+    const data = {
+      labels: labels,
+      datasets: [
+        {
+          axis: "y",
+          label: "男性",
+          data: [
+            -6037,
+            -5296,
+            -3636,
+            -3137,
+            "-",
+            -1349,
+            -1433,
+            -1801,
+            -1730,
+            -748,
+            -717,
+            -712,
+            "-",
+            "-",
+            "-",
+          ],
+          backgroundColor: "rgba(34, 77, 164, 0.2)",
+          borderColor: "rgba(34, 77, 164, 1)",
+          borderWidth: 1,
+        },
+        {
+          axis: "y",
+          label: "女性",
+          data: [
+            3592,
+            2477,
+            2853,
+            243,
+            2655,
+            1101,
+            906,
+            153,
+            "-",
+            546,
+            459,
+            353,
+            724,
+            668,
+            444,
+          ],
+          backgroundColor: "rgba(215, 15, 85, 0.2)",
+          borderColor: "rgba(215, 15, 85, 1)",
+          borderWidth: 1,
+        },
+      ],
+    };
+
+    const options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: "y",
+      scales: {
+        x: {
+          grid: {
+            display: true,
+          },
+          title: {
+            display: true,
+            text: "人",
+            font: {
+              weight: "bold",
+            },
+          },
+          max: 8000,
+          min: -8000,
+          ticks: {
+            callback: function (value) {
+              return Math.abs(value);
+            },
+          },
+        },
+        y: {
+          stacked: true,
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: "癌症死亡原因",
+            font: {
+              weight: "bold",
+            },
+          },
+          grid: {
+            display: false,
+            offset: true,
+          },
+        },
+      },
+      plugins: {
+        legend: {
+          labels: {
+            font: {
+              weight: "bold"
+            },
+          },
+        },
+        tooltip: {
+          callbacks: {
+            title: function (context) {
+              return `${context[0].label}`;
+            },
+            label: function (context) {
+              value = context.dataset.data[context.dataIndex];
+              console.log(value);
+              if (value == "-") {
+                return;
+              } else if (value > 0) {
+                value = value
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                let label = `${context.dataset.label}:${value}人`;
+                return label;
+              } else {
+                value = Math.abs(value);
+                value = value
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                let label = `${context.dataset.label}:${value}人`;
+                return label;
+              }
+            },
+          },
+        },
+      },
+    };
+
+    const config = {
+      type: "bar",
+      data: data,
+      options: options,
+    };
+
+    const ctx = document.getElementById("myChart").getContext("2d");
+    const myChart = new Chart(ctx, config);
+
+    function responsiveFonts() {
+      if (window.outerWidth > 999) {
+        Chart.defaults.font.size = 18;
+      }
+
+      if (window.outerWidth < 999 && window.outerWidth > 500) {
+        Chart.defaults.font.size = 12;
+      }
+
+      if (window.outerWidth < 500) {
+        Chart.defaults.font.size = 8;
+      }
+      myChart.update();
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="./img/logo.ico">
+    <link rel="stylesheet" href="./css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="./css/responsive.dataTables.min.css">
+    <script src="./js/jquery-3.5.1.min.js"></script>
+    <script src="./js/jquery.datatables.min.js"></script>
+    <script src="./js/dataTables.responsive.min.js"></script>
+    <style>
+        h2 {
+            font-size: calc(16px + (24 - 16) * ((100vw - 300px) / (1440 - 300)));
+        }
+
+        @media screen and (min-width:320px) {
+            .container {
+                width: 100vw;
+            }
+        }
+
+        @media screen and (min-width:481px) {
+            .container {
+                width: 50vw;
+            }
+        }
+
+        @media screen and (min-width:1025px) {
+            .container {
+                width: 30vw;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <h2>110年我國各縣市耕地面積統計表</h2>
+        </div>
+        <table id="mytable" class="display responsive nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">耕地面積</th>
+                </tr>
+            </thead>
+        </table>
+        <div>
+            註解：<br /><br />
+            SOURCE:<br />
+            直轄市及各縣(市)政府農業主管單位<br /><br />
+            UNIT:<br />
+            公頃<br />
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#mytable').DataTable({
+                ajax: './data/AG0101A1AT007.txt',
+                ordering: false,
+                language: {
+                    decimal: '.',
+                    thousands: ',',
+                    url: './json/zh-HANT.json'
+                },
+                columnDefs: [
+                    {
+                        targets: 0,
+                        className: 'dt-body-right'
+                    },
+                    {
+                        targets: 1,
+                        className: 'dt-right',
+                        render: $.fn.dataTable.render.number(',', '.', 2, '')
+                    },
+                    { responsivePriority: 1, targets: 0 },
+                    { responsivePriority: 2, targets: -1 }
+                ]
+            });
+        });
+    </script>
+</body>
+
+</html>

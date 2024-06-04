@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="icon" href="./img/logo.ico">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+
+    h2 {
+      font-size: calc(16px + (24 - 16) * ((100vw - 300px) / (1440 - 300)));
+    }
+
+    .chartMenu {
+      width: 100vw;
+      height: 40px;
+      line-height: 40px;
+      background: #1a1a1a;
+      color: rgb(255, 255, 255);
+    }
+
+    .chartCard {
+      width: 100vw;
+      height: calc(100vh - 40px);
+      background: rgba(255, 26, 104, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chartBox {
+      width: 60vw;
+      padding: 20px;
+      border-radius: 20px;
+      border: solid 3px rgba(255, 26, 104, 1);
+      background: white;
+    }
+
+    @media only screen and (max-width: 900px) {
+      .chartBox {
+        width: 80%;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="chartMenu">
+    <h2>110年藝文展演活動類別統計</h2>
+  </div>
+  <div class="chartCard">
+    <div class="chartBox">
+      <canvas id="myChart"></canvas>
+    </div>
+  </div>
+  <script src="./js/chart.min.js"></script>
+  <script src="./js/chartjs-chart-treemap.min.js"></script>
+  <script>
+    if (window.outerWidth > 999) {
+      Chart.defaults.font.size = 16;
+    }
+
+    if (window.outerWidth < 999 && window.outerWidth > 600) {
+      Chart.defaults.font.size = 10;
+    }
+
+    if (window.outerWidth < 600) {
+      Chart.defaults.font.size = 8;
+    }
+
+    const tree = [
+      { exhibition: "視覺藝術", value: 6064 },
+      { exhibition: "工藝", value: 1996 },
+      { exhibition: "設計", value: 1019 },
+      { exhibition: "古典與傳統音樂", value: 3508 },
+      { exhibition: "流行音樂", value: 2318 },
+      { exhibition: "戲劇", value: 2829 },
+      { exhibition: "舞蹈", value: 1016 },
+      { exhibition: "說唱", value: 118 },
+      { exhibition: "影視/廣播", value: 4347 },
+      { exhibition: "民俗與文化資產", value: 3884 },
+      { exhibition: "語文與圖書", value: 13512 },
+      { exhibition: "其他", value: 0 },
+      { exhibition: "綜合", value: 1931 }
+    ];
+
+    const color = [];
+
+    for (i = 0; i < tree.length; i++) {
+      const r = Math.floor(Math.random() * 255);
+      const g = Math.floor(Math.random() * 255);
+      const b = Math.floor(Math.random() * 255);
+      color.push(r + "," + g + "," + b);
+    }
+
+    let colorFromRaw = (ctx) => {
+      const colorArray = color;
+      const exhibitionArray = [];
+
+      if (ctx.type != 'data') {
+        return 'transparent';
+      }
+
+      ctx.chart.data.datasets[0].tree.forEach(datastructure => {
+        exhibitionArray.push(datastructure.exhibition);
+      })
+
+      const uniqueExhibitionArray = [...new Set(exhibitionArray)];
+
+      const indexExhibition = uniqueExhibitionArray.indexOf(ctx.raw._data.exhibition);
+
+      const value = ctx.raw.v;
+      let alpha = (Math.log(value) / 30);
+      return `rgba(${colorArray[indexExhibition]}, ${alpha})`;
+    };
+
+    const data = {
+      datasets: [
+        {
+          label: "活動個數",
+          tree: tree,
+          key: "value",
+          groups: ["exhibition"],
+          backgroundColor: (ctx) => colorFromRaw(ctx),
+          labels: {
+            display: true,
+            formatter: (context) => {
+              return context.raw.g
+            }
+          },
+          captions: {
+            display: true,
+            font: {
+              size: 16,
+            }
+          },
+          spacing: 0.5,
+          borderWidth: 1.5,
+          borderColor: "rgba(200,200,200,1)",
+          hoverBackgroundColor: "rgba(220,230,220,0.5)"
+        }
+      ],
+    };
+
+    const options = {
+      responsive: true,
+      // maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: {
+            font: {
+              weight: "bold",
+            },
+          },
+        },
+        tooltip: {
+          callbacks: {
+            title: (context) => {
+              if (context[1] == undefined) {
+                return `${context[0].dataset.data[context[0].dataIndex].g}`;
+              } else {
+                return `${context[1].dataset.data[context[1].dataIndex].g}`;
+              }
+            },
+            label: (context) => {
+              let value = context.dataset.data[context.dataIndex].v
+              value = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              let label = `${context.dataset.data[context.dataIndex].g}:${value}個`;
+              return label;
+            }
+          }
+        }
+      }
+    };
+
+    const config = {
+      type: "treemap",
+      data: data,
+      options: options,
+    };
+
+    const ctx = document.getElementById("myChart").getContext("2d");
+    const myChart = new Chart(ctx, config);
+
+    let responsiveFonts = () => {
+      if (window.outerWidth > 999) {
+        Chart.defaults.font.size = 16;
+      }
+
+      if (window.outerWidth < 999 && window.outerWidth > 600) {
+        Chart.defaults.font.size = 10;
+      }
+
+      if (window.outerWidth < 600) {
+        Chart.defaults.font.size = 8;
+      }
+
+      myChart.update();
+    }
+  </script>
+</body>
+
+</html>
