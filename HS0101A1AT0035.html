@@ -8,7 +8,7 @@
     <link rel="icon" href="./img/logo.ico" />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
+      href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css"
     />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
@@ -101,19 +101,19 @@
           thousands: ",",
           url: "./json/zh-HANT.json",
         },
-        // columnDefs: [
-        //   {
-        //     targets: 0,
-        //     className: "dt-body-right",
-        //   },
-        //   {
-        //     targets: [1, 2, 3, 4, 5, 6],
-        //     className: "dt-right",
-        //     render: $.fn.dataTable.render.number(",", ".", 0, ""),
-        //   },
-        //   { responsivePriority: 1, targets: 0 },
-        //   { responsivePriority: 2, targets: -1 },
-        // ],
+        columnDefs: [
+          {
+            targets: 0,
+            className: "dt-body-right",
+          },
+          {
+            targets: [1, 2, 3, 4, 5, 6],
+            className: "dt-right",
+            render: $.fn.dataTable.render.number(",", ".", 0, ""),
+          },
+          { responsivePriority: 1, targets: 0 },
+          { responsivePriority: 2, targets: -1 },
+        ],
       });
     </script>
     <!-- https://datatables.net/examples/data_sources/ajax.html -->
